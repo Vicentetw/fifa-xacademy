@@ -85,8 +85,21 @@ const login = async (req, res) => {
     res.status(500).json({ message: 'Error en login' });
   }
 };
+// =======================
+// LOGOUT
+// =======================
+const logout = (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax'
+  });
+
+  res.json({ message: 'Logout exitoso' });
+};
 
 module.exports = {
   register,
-  login
+  login,
+  logout
 };
