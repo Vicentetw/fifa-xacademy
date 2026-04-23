@@ -10,9 +10,11 @@ const register = async (req, res) => {
     const { email, password } = req.body;
 
     // 1. Validación básica si no hay email o password
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email y password requeridos' });
-    }
+    if (!email || !password || password.length < 6) {
+  return res.status(400).json({
+    message: 'Datos inválidos (password mínimo 6 caracteres)'
+  });
+}
 
     // 2. Verificar si existe usuario con ese email y no permite crear otro con el mismo email
     const existingUser = await User.findOne({ where: { email } });
@@ -49,6 +51,8 @@ const login = async (req, res) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
+         //agrego evito ataque te timing attack
+      await new Promise(resolve => setTimeout(resolve, 300));
       return res.status(401).json({ message: 'Credenciales inválidas' });
     }
 
@@ -69,7 +73,8 @@ const login = async (req, res) => {
     // 4. Enviar cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, // true en producción
+      //secure: false, // true en producción
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax'
     });
 

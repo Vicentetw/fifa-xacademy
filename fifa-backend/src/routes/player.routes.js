@@ -1,15 +1,16 @@
-/**
- * ============================================
- * FIFA XACADEMY - Rutas de Jugadores
- * ============================================
- */
-
 const express = require('express');
 const router = express.Router();
 
-// Placeholder - se implementará en Fase 3
-router.get('/', (req, res) => {
-  res.json({ message: 'Player routes - Fase 3' });
+const authMiddleware = require('../middlewares/auth.middleware');
+
+console.log('Middleware:', authMiddleware);
+
+// Ruta protegida
+router.get('/', authMiddleware, (req, res) => {
+  res.json({
+    message: 'Accediste a jugadores',
+    user: req.user
+  });
 });
 
 module.exports = router;
