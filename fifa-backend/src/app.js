@@ -3,7 +3,7 @@
  * FIFA XACADEMY - Servidor Principal
  * ============================================
  * Punto de entrada de la aplicación Express
- * Configuración centralizada de middlewares y rutas
+ * Acá configuro middlewares y rutas
  */
 
 require('dotenv').config();
@@ -11,6 +11,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { connectDB } = require('./config/database');
+// Importar modelos para crear tablas en const startServer
+
 
 // Importar rutas
 const authRoutes = require('./routes/auth.routes');
@@ -65,7 +67,7 @@ app.use('/api/players', playerRoutes);
 app.use((req, res) => {
   res.status(404).json({
     status: 'error',
-    message: 'Ruta no encontrada'
+    message: 'Nada por aquí - Ruta no encontrada'
   });
 });
 
@@ -92,7 +94,12 @@ const startServer = async () => {
     await connectDB();
     console.log('✅ Base de datos conectada');
 
-    // 2. Iniciar servidor
+    // 2. Crear tabla users (AQUÍ VA)
+    const { createUserTable } = require('./models/user.model');
+    await createUserTable();
+    console.log('✅ Tabla users lista');
+
+    // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
