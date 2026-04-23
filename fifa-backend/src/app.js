@@ -72,12 +72,12 @@ app.use((req, res) => {
 });
 
 // ============================================
-// MANEJO DE ERRORES CENTRALIZADO
+// MANEJO DE ERRORES GENÉRICOS
 // ============================================
 
 app.use((err, req, res, next) => {
   console.error('❌ Error no controlado:', err);
-  
+
   res.status(err.status || 500).json({
     status: 'error',
     message: err.message || 'Error interno del servidor'
@@ -94,11 +94,12 @@ const startServer = async () => {
     await connectDB();
     console.log('✅ Base de datos conectada');
 
-    // 2. Crear tabla users (AQUÍ VA)
-    const { createUserTable } = require('./models/user.model');
-    await createUserTable();
-    console.log('✅ Tabla users lista');
+    // 2. Creo la tabla users 
+    
+    const User = require('./models/user.model');
 
+    await User.sync();
+    console.log('✅ Tabla users sincronizada');
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
