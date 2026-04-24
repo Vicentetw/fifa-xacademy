@@ -94,12 +94,17 @@ const startServer = async () => {
     await connectDB();
     console.log('✅ Base de datos conectada');
 
-    // 2. Creo la tabla users 
+    // 2. Creo la tabla users y players si no existen (sync)
     
     const User = require('./models/user.model');
+    const Player = require('./models/player.model');
+
 
     await User.sync();
     console.log('✅ Tabla users sincronizada');
+
+    await Player.sync();
+    console.log('✅ Tabla players sincronizada');
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
