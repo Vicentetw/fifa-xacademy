@@ -103,10 +103,8 @@ const startServer = async () => {
     await User.sync();
     console.log('✅ Tabla users sincronizada');
 
-    //await Player.sync();
-    //CAMBIAR A ALTER PARA DESARROLLO, EN PRODUCCIÓN SE RECOMIENDA MIGRACIONES
-    await Player.sync({ alter: true });
-    console.log('✅ Tabla players sincronizada');
+    await Player.sync();
+    
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
 
