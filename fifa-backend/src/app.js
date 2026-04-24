@@ -95,7 +95,7 @@ const startServer = async () => {
     console.log('✅ Base de datos conectada');
 
     // 2. Creo la tabla users y players si no existen (sync)
-    
+
     const User = require('./models/user.model');
     const Player = require('./models/player.model');
 
@@ -103,14 +103,18 @@ const startServer = async () => {
     await User.sync();
     console.log('✅ Tabla users sincronizada');
 
-    await Player.sync();
+    //await Player.sync();
+    //CAMBIAR A ALTER PARA DESARROLLO, EN PRODUCCIÓN SE RECOMIENDA MIGRACIONES
+    await Player.sync({ alter: true });
     console.log('✅ Tabla players sincronizada');
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
+
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
       console.log(`📋 Health check: http://localhost:${PORT}/health`);
     });
+
   } catch (error) {
     console.error('❌ Error al iniciar el servidor:', error.message);
     process.exit(1);

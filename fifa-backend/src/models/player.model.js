@@ -23,6 +23,11 @@ const Player = sequelize.define('Player', {
     allowNull: false,
   },
 
+  version: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  
   pace: {
     type: DataTypes.INTEGER,
     allowNull: false,

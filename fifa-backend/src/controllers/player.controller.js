@@ -6,6 +6,7 @@ const createPlayer = async (req, res, next) => {
         name,
         team,
         position,
+        version,
         pace,
         shooting,
         passing,
@@ -16,7 +17,7 @@ const createPlayer = async (req, res, next) => {
 
     //1 validación básica
     if (
-        !name || !team || !position ||
+        !name || !team || !position || !version ||
         pace === null || shooting === null ||
         passing === null || dribbling === null || defending === null || physical === null      
     ) {
@@ -29,6 +30,7 @@ const createPlayer = async (req, res, next) => {
         name,
         team,
         position,
+        version,
         pace,
         shooting,
         passing,
