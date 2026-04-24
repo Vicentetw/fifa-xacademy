@@ -8,6 +8,7 @@
 
 const Player = require('../models/player.model');
 const { Op } = require('sequelize');
+const { Parser } = require('json2csv');
 const { validatePlayer } = require('../utils/player.validator');
 const createPlayer = async (req, res, next) => {
     try {
@@ -106,6 +107,56 @@ const getPlayers = async (req, res) => {
     }
 };
 
+const exportPlayersCSV = async (req, res) => {
+    try {
+        const { name, team, position, version } = req.query;
+
+        const where = {};
+
+        if (name) where.name = { [Op.like]: `%${name}%` };
+        if (team) where.team = { [Op.like]: `%${team}%` };
+        if (position) where.position = position;
+        if (version) where.version = version;
+
+        // 1. Traer datos SIN paginación (todo)
+        const players = await Player.findAll({ where });
+
+        // 2. Convertir a JSON plano
+        const data = players.map(p => p.toJSON());
+
+        // 3. Configurar campos del CSV
+        const fields = [
+            'id',
+            'name',
+            'team',
+            'position',
+            'version',
+            'pace',
+            'shooting',
+            'passing',
+            'dribbling',
+            'defending',
+            'physical'
+        ];
+
+        const parser = new Parser({ fields });
+
+        // 4. Convertir a CSV
+        const csv = parser.parse(data);
+
+        // 5. Headers para descarga
+        res.header('Content-Type', 'text/csv');
+        res.attachment('players.csv');
+
+        // 6. Enviar archivo
+        return res.send(csv);
+
+    } catch (error) {
+        console.error('❌ Error exportando CSV:', error);
+        res.status(500).json({ message: 'Error exportando CSV' });
+    }
+};
+
 //getPlayersById
 const getPlayerById = async (req, res) => {
     try {
@@ -129,8 +180,24 @@ const getPlayerById = async (req, res) => {
             });
         }
 
-        // 5. Responder
-        res.json(player);
+        // 5. Responder con skills agrupadas para que el frontend las muestre como un objeto skills en lugar de campos sueltos
+        //res.json(player);
+        res.json({
+            id: player.id,
+            name: player.name,
+
+            skills: {
+                labels: ['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical'],
+                values: [
+                    player.pace,
+                    player.shooting,
+                    player.passing,
+                    player.dribbling,
+                    player.defending,
+                    player.physical
+                ]
+            }
+        });
 
     } catch (error) {
         console.error('X Error al obtener jugador:', error);
@@ -213,5 +280,6 @@ module.exports = {
     getPlayers,
     getPlayerById,
     updatePlayer,
-    deletePlayer
+    deletePlayer,
+    exportPlayersCSV
 };

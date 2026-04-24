@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const authMiddleware = require('../middlewares/auth.middleware');
-const { createPlayer, getPlayers, getPlayerById, updatePlayer, deletePlayer} = require('../controllers/player.controller');
+const { createPlayer, getPlayers, getPlayerById, updatePlayer, deletePlayer, exportPlayersCSV} = require('../controllers/player.controller');
 
 //console.log('Middleware:', authMiddleware);
 
@@ -11,6 +11,7 @@ const { createPlayer, getPlayers, getPlayerById, updatePlayer, deletePlayer} = r
 // 2 rutas específicas (/:id)
 // 3 acciones (POST, PUT, DELETE)
 router.get('/', authMiddleware, getPlayers);
+router.get('/export/csv', authMiddleware, exportPlayersCSV);
 router.get('/:id', authMiddleware, getPlayerById);
 
 router.post('/', authMiddleware, createPlayer);
