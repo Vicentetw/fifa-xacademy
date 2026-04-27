@@ -86,11 +86,13 @@
   background: white;
   border-radius: 8px;
   overflow: hidden;
+  min-width: 900px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px; /* 👈 fuerzo scroll en mobile */
 }
 
 thead {
