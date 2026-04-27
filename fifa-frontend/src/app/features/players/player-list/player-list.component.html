@@ -1,0 +1,85 @@
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>⚽ Jugadores FIFA</h1>
+    <div class="header-actions">
+      <button class="add-btn" (click)="addPlayer()">
+        ➕ Agregar Jugador
+      </button>
+      <button class="logout-btn" (click)="logout()">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="errorMessage" class="error-box">
+    {{ errorMessage }}
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" class="loading">
+    ⏳ Cargando jugadores...
+  </div>
+
+  <!-- TABLA -->
+  <div *ngIf="!isLoading && players.length > 0" class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Equipo</th>
+          <th>Posición</th>
+          <th>Versión</th>
+          <th>Pace</th>
+          <th>Shooting</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let player of players">
+          <td>{{ player.id }}</td>
+          <td>{{ player.name }}</td>
+          <td>{{ player.team }}</td>
+          <td>{{ player.position }}</td>
+          <td>{{ player.version }}</td>
+          <td>{{ player.pace }}</td>
+          <td>{{ player.shooting }}</td>
+          <td class="actions-cell">
+            <button class="edit-btn" (click)="editPlayer(player)">
+              ✏️ Editar
+            </button>
+            <button class="delete-btn" (click)="deletePlayer(player.id!)">
+              🗑️ Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <!-- VACÍO -->
+  <div *ngIf="!isLoading && players.length === 0" class="empty">
+    No hay jugadores disponibles
+  </div>
+
+  <!-- PAGINACIÓN -->
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      ←
+    </button>
+
+    <span> {{ currentPage }} / {{ totalPages }} </span>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      →
+    </button>
+  </div>
+
+</div>

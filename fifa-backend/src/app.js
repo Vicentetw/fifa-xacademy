@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 // CORS - Permite solicitudes del frontend Angular
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:4200',
+  origin: process.env.FRONTEND_URL || 'https://localhost:4200',
   credentials: true // Permite enviar cookies
 }));
 

@@ -1,0 +1,169 @@
+<form [formGroup]="form" (ngSubmit)="submitForm()" class="player-form">
+
+  <!-- ERROR GENERAL -->
+  <div *ngIf="errorMessage" class="error-box">
+    {{ errorMessage }}
+  </div>
+
+  <!-- NOMBRE -->
+  <div class="form-group">
+    <label for="name">Nombre <span class="required">*</span></label>
+    <input 
+      id="name"
+      type="text" 
+      formControlName="name"
+      placeholder="Ej: Cristiano Ronaldo"
+      [class.invalid]="isFieldInvalid('name')">
+    <span class="field-error" *ngIf="isFieldInvalid('name')">
+      {{ getFieldError('name') }}
+    </span>
+  </div>
+
+  <!-- EQUIPO -->
+  <div class="form-group">
+    <label for="team">Equipo <span class="required">*</span></label>
+    <input 
+      id="team"
+      type="text" 
+      formControlName="team"
+      placeholder="Ej: Al Nassr"
+      [class.invalid]="isFieldInvalid('team')">
+    <span class="field-error" *ngIf="isFieldInvalid('team')">
+      {{ getFieldError('team') }}
+    </span>
+  </div>
+
+  <!-- POSICIÓN -->
+  <div class="form-group">
+    <label for="position">Posición <span class="required">*</span></label>
+    <select 
+      id="position"
+      formControlName="position"
+      [class.invalid]="isFieldInvalid('position')">
+      <option value="">Selecciona posición</option>
+      <option value="ST">Delantero (ST)</option>
+      <option value="RW">Extremo Derecho (RW)</option>
+      <option value="LW">Extremo Izquierdo (LW)</option>
+      <option value="CM">Centrocampista (CM)</option>
+      <option value="CDM">Centrocampista Defensivo (CDM)</option>
+      <option value="LB">Lateral Izquierdo (LB)</option>
+      <option value="RB">Lateral Derecho (RB)</option>
+      <option value="CB">Defensa Central (CB)</option>
+      <option value="GK">Portero (GK)</option>
+    </select>
+    <span class="field-error" *ngIf="isFieldInvalid('position')">
+      {{ getFieldError('position') }}
+    </span>
+  </div>
+
+  <!-- VERSIÓN -->
+  <div class="form-group">
+    <label for="version">Versión <span class="required">*</span></label>
+    <input 
+      id="version"
+      type="number" 
+      formControlName="version"
+      placeholder="Ej: 2023"
+      [class.invalid]="isFieldInvalid('version')">
+    <span class="field-error" *ngIf="isFieldInvalid('version')">
+      {{ getFieldError('version') }}
+    </span>
+  </div>
+
+  <!-- ATRIBUTOS (Grid 2 columnas) -->
+  <div class="attributes-grid">
+    <!-- PACE -->
+    <div class="form-group">
+      <label for="pace">Pace <span class="required">*</span></label>
+      <input 
+        id="pace"
+        type="number" 
+        formControlName="pace"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('pace')">
+      <span class="field-error" *ngIf="isFieldInvalid('pace')">
+        {{ getFieldError('pace') }}
+      </span>
+    </div>
+
+    <!-- SHOOTING -->
+    <div class="form-group">
+      <label for="shooting">Shooting <span class="required">*</span></label>
+      <input 
+        id="shooting"
+        type="number" 
+        formControlName="shooting"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('shooting')">
+      <span class="field-error" *ngIf="isFieldInvalid('shooting')">
+        {{ getFieldError('shooting') }}
+      </span>
+    </div>
+
+    <!-- PASSING -->
+    <div class="form-group">
+      <label for="passing">Passing <span class="required">*</span></label>
+      <input 
+        id="passing"
+        type="number" 
+        formControlName="passing"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('passing')">
+      <span class="field-error" *ngIf="isFieldInvalid('passing')">
+        {{ getFieldError('passing') }}
+      </span>
+    </div>
+
+    <!-- DRIBBLING -->
+    <div class="form-group">
+      <label for="dribbling">Dribbling <span class="required">*</span></label>
+      <input 
+        id="dribbling"
+        type="number" 
+        formControlName="dribbling"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('dribbling')">
+      <span class="field-error" *ngIf="isFieldInvalid('dribbling')">
+        {{ getFieldError('dribbling') }}
+      </span>
+    </div>
+
+    <!-- DEFENDING -->
+    <div class="form-group">
+      <label for="defending">Defending <span class="required">*</span></label>
+      <input 
+        id="defending"
+        type="number" 
+        formControlName="defending"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('defending')">
+      <span class="field-error" *ngIf="isFieldInvalid('defending')">
+        {{ getFieldError('defending') }}
+      </span>
+    </div>
+
+    <!-- PHYSICAL -->
+    <div class="form-group">
+      <label for="physical">Physical <span class="required">*</span></label>
+      <input 
+        id="physical"
+        type="number" 
+        formControlName="physical"
+        placeholder="0-99"
+        [class.invalid]="isFieldInvalid('physical')">
+      <span class="field-error" *ngIf="isFieldInvalid('physical')">
+        {{ getFieldError('physical') }}
+      </span>
+    </div>
+  </div>
+
+  <!-- BOTONES -->
+  <div class="form-actions">
+    <button type="button" class="cancel-btn" (click)="cancel()">
+      Cancelar
+    </button>
+    <button type="submit" class="submit-btn" [disabled]="form.invalid || isLoading">
+      {{ isLoading ? 'Guardando...' : (isEditMode ? 'Actualizar' : 'Crear') }}
+    </button>
+  </div>
+</form>

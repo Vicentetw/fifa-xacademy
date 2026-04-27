@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>Iniciar sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input 
+          id="email"
+          type="email" 
+          formControlName="email" 
+          placeholder="ejemplo@mail.com"
+          [class.invalid]="isFieldInvalid('email')"
+          aria-label="Email">
+        <span class="field-error" *ngIf="isFieldInvalid('email')">
+          {{ getFieldError('email') }}
+        </span>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Contraseña <span class="required">*</span></label>
+        <div class="password-wrapper">
+          <input 
+            id="password"
+            [type]="showPassword ? 'text' : 'password'" 
+            formControlName="password" 
+            placeholder="Mínimo 6 caracteres"
+            [class.invalid]="isFieldInvalid('password')"
+            aria-label="Contraseña">
+          <button type="button" class="toggle-password" (click)="togglePassword()" title="Mostrar/ocultar">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        <span class="field-error" *ngIf="isFieldInvalid('password')">
+          {{ getFieldError('password') }}
+        </span>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" [disabled]="form.invalid || isLoading" class="submit-btn">
+        <span *ngIf="!isLoading">Entrar</span>
+        <span *ngIf="isLoading">Cargando...</span>
+      </button>
+    </form>
+
+    <!-- General Error -->
+    <p class="error" *ngIf="errorMessage" role="alert">
+      {{ errorMessage }}
+    </p>
+
+    <!-- Footer Links -->
+    <div class="auth-links">
+      <a href="#">¿Olvidaste la contraseña?</a>
+      <span>·</span>
+      <a href="#">Registrarse</a>
+    </div>
+  </div>
+</div>

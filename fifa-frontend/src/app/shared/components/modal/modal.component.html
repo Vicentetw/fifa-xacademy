@@ -1,0 +1,15 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="onBackdropClick($event)">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h2>{{ modalData.title }}</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-content">
+      <!-- RENDERIZA EL COMPONENTE DINÁMICAMENTE -->
+      <ng-container *ngIf="componentToRender">
+        <ng-component [ngComponentOutlet]="componentToRender" [ngComponentOutletInputs]="{ playerData: modalData.data }"></ng-component>
+      </ng-container>
+    </div>
+  </div>
+</div>
