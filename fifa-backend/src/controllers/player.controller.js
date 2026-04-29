@@ -185,7 +185,9 @@ const getPlayerById = async (req, res) => {
         res.json({
             id: player.id,
             name: player.name,
-
+            team: player.team,
+            position: player.position,
+            version: player.version,
             skills: {
                 labels: ['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical'],
                 values: [

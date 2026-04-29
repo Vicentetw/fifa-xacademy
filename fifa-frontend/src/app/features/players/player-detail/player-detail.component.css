@@ -15,7 +15,7 @@
 }
 
 .back-btn {
-  background-color: #6c757d;
+  background-color: #1e3b8a;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -26,7 +26,8 @@
 }
 
 .back-btn:hover {
-  background-color: #5a6268;
+  background-color: #112355;
+  color: rgb(178, 182, 178);
 }
 
 .header h1 {
@@ -70,7 +71,7 @@
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
-  border-left: 4px solid #FF6B6B;
+  border-left: 4px solid #1e3b8a;
 }
 
 .player-info h2 {
