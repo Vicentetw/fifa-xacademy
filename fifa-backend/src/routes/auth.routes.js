@@ -16,13 +16,8 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/logout', logout);
 
-// Placeholder - se implementará en Fase 4
-/* router.get('/', (req, res) => {
-  res.json({ message: 'Auth routes - Fase 4' });
-}); */
-router.get('/me2', authMiddleware, (req, res) => {
-  res.json({ user: req.user });
-});
+
+
 router.get('/me', authMiddleware, async (req, res) => {
   try {
 
