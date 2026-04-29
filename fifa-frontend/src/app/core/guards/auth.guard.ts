@@ -10,8 +10,12 @@ export const authGuard: CanActivateFn = () => {
 
   return authService.getMe().pipe(
     // ✔ Si el backend responde OK → el usuario está autenticado
-    map(() => true),
-
+    //map(() => true),
+//si respone OK, guardo el usuario en memoria y dejo pasar
+map((res:any) => {
+  authService.setUser(res.user);
+  return true;
+}),
     // ❌ Si falla (no hay cookie válida, token expirado, etc.)
     catchError(() => {
       // 🔁 Redirige automáticamente al login
