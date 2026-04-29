@@ -71,4 +71,22 @@ export class PlayersService {
       { withCredentials: true }
     );
   }
+
+  /**
+   * Descarga CSV con los jugadores filtrados
+   * @param filters Filtros: name, team, position, version
+   */
+  downloadCSV(filters?: any): Observable<Blob> {
+    let url = `${this.API_URL}/export/csv`;
+    
+    if (filters?.name) url += `?name=${filters.name}`;
+    if (filters?.team) url += (filters?.name ? '&' : '?') + `team=${filters.team}`;
+    if (filters?.position) url += (filters?.name || filters?.team ? '&' : '?') + `position=${filters.position}`;
+    if (filters?.version) url += (filters?.name || filters?.team || filters?.position ? '&' : '?') + `version=${filters.version}`;
+
+    return this.http.get<Blob>(url, { 
+      withCredentials: true,
+      responseType: 'blob' as 'json'
+    });
+  }
 }

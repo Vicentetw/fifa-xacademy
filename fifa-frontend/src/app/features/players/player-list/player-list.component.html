@@ -8,10 +8,42 @@
       <button class="add-btn" (click)="addPlayer()">
         ➕ Agregar Jugador
       </button>
-   <!--   <button class="logout-btn" (click)="logout()">
-        Cerrar sesión
+      <button class="download-btn" (click)="downloadCSV()" [disabled]="isDownloading">
+        {{ isDownloading ? '⏳ Descargando...' : '⬇️ Descargar CSV' }}
       </button>
-      -->
+    </div>
+  </div>
+
+  <!-- FILTROS -->
+  <div class="filters-section">
+    <h3>🔍 Filtros</h3>
+    <div class="filters-grid">
+      <input 
+        type="text" 
+        placeholder="Buscar por nombre"
+        [(ngModel)]="filterName"
+        (keyup.enter)="loadPlayers()"
+        class="filter-input">
+      <input 
+        type="text" 
+        placeholder="Filtrar por equipo"
+        [(ngModel)]="filterTeam"
+        (keyup.enter)="loadPlayers()"
+        class="filter-input">
+      <input 
+        type="text" 
+        placeholder="Filtrar por posición"
+        [(ngModel)]="filterPosition"
+        (keyup.enter)="loadPlayers()"
+        class="filter-input">
+      <input 
+        type="number" 
+        placeholder="Filtrar por versión"
+        [(ngModel)]="filterVersion"
+        (keyup.enter)="loadPlayers()"
+        class="filter-input">
+      <button class="search-btn" (click)="loadPlayers()">🔎 Buscar</button>
+      <button class="clear-btn" (click)="clearFilters()">🔄 Limpiar</button>
     </div>
   </div>
 
@@ -52,6 +84,9 @@
           <td>{{ player.pace }}</td>
           <td>{{ player.shooting }}</td>
           <td class="actions-cell">
+            <button class="detail-btn" (click)="viewDetail(player.id!)">
+              👁️ Ver Detalles
+            </button>
             <button class="edit-btn" (click)="editPlayer(player)">
               ✏️ Editar
             </button>

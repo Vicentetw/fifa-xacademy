@@ -1,1 +1,71 @@
-<p>player-detail works!</p>
+<app-navbar></app-navbar>
+
+<div class="container">
+  <!-- HEADER -->
+  <div class="header">
+    <button class="back-btn" (click)="goBack()">← Volver</button>
+    <h1>Detalles del Jugador</h1>
+  </div>
+
+  <!-- LOADING -->
+  <div *ngIf="isLoading" class="loading">
+    ⏳ Cargando detalles...
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="errorMessage && !isLoading" class="error-box">
+    {{ errorMessage }}
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div *ngIf="!isLoading && playerData && !errorMessage" class="detail-container">
+    
+    <!-- INFO BÁSICA -->
+    <div class="player-info">
+      <h2>{{ playerData.name }}</h2>
+      <div class="info-grid">
+        <p class="info-text"><strong>ID:</strong> {{ playerData.id }}</p>
+        <p class="info-text"><strong>Team:</strong> {{ playerData.team }}</p>
+        <p class="info-text"><strong>Position:</strong> {{ playerData.position }}</p>
+        <p class="info-text"><strong>Version:</strong> {{ playerData.version }}</p>
+      </div>
+    </div>
+
+    <!-- GRÁFICO RADAR -->
+    <div class="chart-container" *ngIf="radarChartData.labels && radarChartData.labels.length > 0">
+      <h3>📊 Skills Radar</h3>
+      <canvas 
+        baseChart 
+        type="radar"
+        [data]="radarChartData"
+        [options]="radarChartOptions">
+      </canvas>
+    </div>
+
+    <!-- SKILLS EN TABLA -->
+    <div class="skills-table" *ngIf="playerData.skills">
+      <h3>📋 Detalles de Skills</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Skill</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let label of playerData.skills.labels; let i = index">
+            <td>{{ label | uppercase }}</td>
+            <td>
+              <div class="skill-bar">
+                <div class="skill-fill" [style.width.%]="playerData.skills.values[i]"></div>
+              </div>
+              {{ playerData.skills.values[i] }}/99
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>

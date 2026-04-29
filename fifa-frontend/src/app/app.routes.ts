@@ -19,5 +19,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/players/player-list/player-list.component')
         .then(m => m.PlayerListComponent)
+  },
+  {
+    path: 'players/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/players/player-detail/player-detail.component')
+        .then(m => m.PlayerDetailComponent)
   }
 ];
