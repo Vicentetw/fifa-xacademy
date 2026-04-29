@@ -5,11 +5,13 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ModalService } from '../../../core/services/modal.service';
 import { Player, PlayersResponse } from '../../../core/models/player.model';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar/navbar.component';
+
 
 @Component({
   selector: 'app-player-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NavbarComponent],
   templateUrl: './player-list.component.html',
   styleUrl: './player-list.component.css'
 })
@@ -92,8 +94,8 @@ export class PlayerListComponent implements OnInit {
   }
 
   /**
-   * Cierra sesión
-   */
+   *cierra sesión ya lo pasé a navbar
+   
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
@@ -104,7 +106,7 @@ export class PlayerListComponent implements OnInit {
       }
     });
   }
-
+*/
   /**
    * Navega a la página anterior
    */

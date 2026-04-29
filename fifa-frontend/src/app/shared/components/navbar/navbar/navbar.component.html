@@ -1,0 +1,19 @@
+<div class="navbar">
+    <!-- nombre de la app -->
+
+    <div class="logo">
+        ⚽ FIFA
+    </div>
+    <!-- Usuario  -->
+    <div class="user" *ngIf="user">
+        <span>{{ user.email }}</span>
+
+        <button (click)="logout()">
+            Logout
+        </button>
+    </div>
+
+
+
+
+</div>
