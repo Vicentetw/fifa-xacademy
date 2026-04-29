@@ -32,6 +32,26 @@
   background: #059669;
 }
 
+.download-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.download-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.download-btn:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+}
+
 .logout-btn {
   background: #ef4444;
   color: white;
@@ -49,6 +69,7 @@
 .actions-cell {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .edit-btn {
@@ -67,7 +88,7 @@
 }
 
 .delete-btn {
-  background: #dc2626;
+  background: #ef4444;
   color: white;
   border: none;
   padding: 6px 10px;
@@ -78,11 +99,11 @@
 }
 
 .delete-btn:hover {
-  background: #b91c1c;
+  background: #dc2626;
 }
 
 .detail-btn {
-  background: #8b5cf6;
+  background: #3b82f6;
   color: white;
   border: none;
   padding: 6px 10px;
@@ -93,7 +114,7 @@
 }
 
 .detail-btn:hover {
-  background: #7c3aed;
+  background: #2563eb;
 }
 
 /* TABLA */
@@ -107,11 +128,11 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px; /* 👈 fuerzo scroll en mobile */
+  min-width: 800px;
 }
 
 thead {
-  background: #1e3a8a;
+  background: #3b82f6;
   color: white;
 }
 
@@ -148,6 +169,21 @@ tbody tr {
 
 .pagination button {
   padding: 6px 12px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.pagination button:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
 }
 
 /* FILTROS */
@@ -214,24 +250,4 @@ tbody tr {
 
 .clear-btn:hover {
   background: #4b5563;
-}
-
-.download-btn {
-  background: #06b6d4;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.download-btn:hover:not(:disabled) {
-  background: #0891b2;
-}
-
-.download-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
 }
