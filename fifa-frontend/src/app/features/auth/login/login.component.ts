@@ -28,7 +28,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   isFieldInvalid(fieldName: string): boolean {
     const field = this.form.get(fieldName);
@@ -38,7 +38,7 @@ export class LoginComponent {
   getFieldError(fieldName: string): string {
     const field = this.form.get(fieldName);
     if (!field?.errors) return '';
-    
+
     if (field.errors['required']) return `${fieldName === 'email' ? 'Email' : 'Contraseña'} requerido`;
     if (field.errors['email']) return 'Email inválido';
     if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
@@ -58,13 +58,35 @@ export class LoginComponent {
     const { email, password } = this.form.value;
 
     this.authService.login(email!, password!).subscribe({
+
       next: () => {
-        this.router.navigate(['/players']);
+
+        // después del login, pido el usuario
+        this.authService.getMe().subscribe({
+
+          next: (res: any) => {
+
+            // guardo usuario en memoria
+            this.authService.setUser(res.user);
+
+            // recién ahora navego
+            this.router.navigate(['/players']);
+          },
+
+          error: () => {
+            this.errorMessage = 'No se pudo obtener usuario';
+            this.isLoading = false;
+          }
+
+        });
+
       },
+
       error: (err: any) => {
         this.errorMessage = err.error?.message || 'Error en login';
         this.isLoading = false;
       }
+
     });
   }
 }

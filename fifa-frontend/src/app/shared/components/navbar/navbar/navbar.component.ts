@@ -20,10 +20,21 @@ export class NavbarComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    // 👉 leo el usuario guardado
-    this.user = this.authService.getUser();
+ ngOnInit() {
+
+  // primero intento leer de memoria
+  this.user = this.authService.getUser();
+
+  // si no hay usuario, lo pido al backend
+  if (!this.user) {
+    this.authService.getMe().subscribe({
+      next: (res: any) => {
+        this.user = res.user;
+        this.authService.setUser(res.user);
+      }
+    });
   }
+}
 
   // 🚪 logout
   logout() {
