@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 // CORS - Permite solicitudes del frontend Angular
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://localhost:4200',
+  origin: process.env.FRONTEND_URL || 'https://fifa-xacademy.web.app',
   credentials: true // Permite enviar cookies
 }));
 
