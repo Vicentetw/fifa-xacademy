@@ -73,9 +73,8 @@ const login = async (req, res) => {
     // 4. Enviar cookie
     res.cookie('token', token, {
       httpOnly: true,
-      //secure: false, // true en producción
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      secure: true,
+      sameSite: 'none'
     });
 
     res.json({ message: 'Login exitoso' });
@@ -91,8 +90,8 @@ const login = async (req, res) => {
 const logout = (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax'
+    secure: true,
+    sameSite: 'none'
   });
 
   res.json({ message: 'Logout exitoso' });
