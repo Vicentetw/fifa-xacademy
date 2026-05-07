@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private API_URL = 'http://localhost:3000/api/auth';
+  private API_URL = environment.apiUrl + '/auth';
 
     // guardo el usuario en memoria después lo obtengo con getMe() para no hacer una petición cada vez que quiera saber quién es el usuario logeado
   private currentUser: any = null;
