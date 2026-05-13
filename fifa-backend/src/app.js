@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const { connectDB } = require('./config/database');
+const { connectDB } = require('./config/database.js.copy');
 // Importar modelos para crear tablas en const startServer
 
 
