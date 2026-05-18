@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const { connectDB } = require('./config/database.js.copy');
+const { connectDB, sequelize } = require('./config/database.js');
 // Importar modelos para crear tablas en const startServer
 
 
@@ -51,6 +51,16 @@ app.get('/health', (req, res) => {
     message: 'API FIFA funcionando correctamente',
     timestamp: new Date().toISOString()
   });
+});
+
+// Readiness - Verifica que la aplicación puede atender tráfico (DB)
+app.get('/ready', async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    return res.status(200).json({ status: 'ok', db: 'connected' });
+  } catch (err) {
+    return res.status(503).json({ status: 'error', db: 'unavailable', message: err.message });
+  }
 });
 
 // ============================================
