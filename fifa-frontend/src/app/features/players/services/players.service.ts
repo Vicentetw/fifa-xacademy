@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 export class PlayersService {
 
   /*private API_URL = 'http://localhost:3000/api/players';*/
-  private API_URL = `${environment.apiUrl}/players`;
+  private API_URL = `${environment.apiUrl}/players-fifa`;
 
   constructor(private http: HttpClient) { }
 

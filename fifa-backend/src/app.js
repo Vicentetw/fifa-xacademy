@@ -17,6 +17,7 @@ const { connectDB, sequelize } = require('./config/database.js');
 // Importar rutas
 const authRoutes = require('./routes/auth.routes');
 const playerRoutes = require('./routes/player.routes');
+const playerFifaRoutes = require('./routes/playerFifa.routes');
 
 //leer cookies
 const cookieParser = require('cookie-parser');
@@ -69,6 +70,7 @@ app.get('/ready', async (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/players', playerRoutes);
+app.use('/api/players-fifa', playerFifaRoutes);
 
 // ============================================
 // MANEJO DE ERRORES 404
@@ -108,12 +110,17 @@ const startServer = async () => {
 
     const User = require('./models/user.model');
     const Player = require('./models/player.model');
+    const PlayerFifa = require('./models/playerFifa.model');
 
 
     await User.sync();
     console.log('✅ Tabla users sincronizada');
 
     await Player.sync();
+    console.log('✅ Tabla players sincronizada');
+
+    await PlayerFifa.sync();
+    console.log('✅ Tabla players_fifa sincronizada');
     
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;
