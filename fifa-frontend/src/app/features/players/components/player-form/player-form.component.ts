@@ -24,7 +24,7 @@ export class PlayerFormComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3)]],
     team: ['', [Validators.required, Validators.minLength(2)]],
     position: ['', [Validators.required]],
-    version: ['', [Validators.required, Validators.min(1990)]],
+    version: ['', [Validators.required, Validators.min(20)]],
     pace: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     shooting: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     passing: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
