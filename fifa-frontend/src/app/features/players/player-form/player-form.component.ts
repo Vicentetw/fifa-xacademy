@@ -24,7 +24,12 @@ export class PlayerFormComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3)]],
     team: ['', [Validators.required, Validators.minLength(2)]],
     position: ['', [Validators.required]],
-    version: ['', [Validators.required, Validators.min(1990)]],
+    version: ['', [Validators.required, Validators.min(20)]],
+    fifa_update: ['', [Validators.required, Validators.minLength(1)]],
+    player_face_url: ['', [Validators.required, Validators.minLength(5)]],
+    overall: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
+    potential: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
+    age: ['', [Validators.required, Validators.min(16), Validators.max(99)]],
     pace: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     shooting: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     passing: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
@@ -48,6 +53,11 @@ export class PlayerFormComponent implements OnInit {
         team: this.playerData.team,
         position: this.playerData.position,
         version: this.playerData.version?.toString(),
+        fifa_update: this.playerData.fifa_update || '',
+        player_face_url: this.playerData.player_face_url || '',
+        overall: this.playerData.overall?.toString() || '',
+        potential: this.playerData.potential?.toString() || '',
+        age: this.playerData.age?.toString() || '',
         pace: this.playerData.pace?.toString(),
         shooting: this.playerData.shooting?.toString(),
         passing: this.playerData.passing?.toString(),
@@ -75,7 +85,10 @@ export class PlayerFormComponent implements OnInit {
 
     if (field.errors['required']) return `${fieldName} es requerido`;
     if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
-    if (field.errors['min']) return `Valor mínimo: ${field.errors['min'].min}`;
+    if (field.errors['min']) {
+      if (fieldName === 'version') return 'La versión debe ser mayor a 19';
+      return `Valor mínimo: ${field.errors['min'].min}`;
+    }
     if (field.errors['max']) return `Valor máximo: ${field.errors['max'].max}`;
     return 'Campo inválido';
   }
@@ -97,6 +110,11 @@ export class PlayerFormComponent implements OnInit {
       team: formValue.team || '',
       position: formValue.position || '',
       version: parseInt(formValue.version || '0'),
+      fifa_update: formValue.fifa_update || '',
+      player_face_url: formValue.player_face_url || '',
+      overall: parseInt(formValue.overall || '0'),
+      potential: parseInt(formValue.potential || '0'),
+      age: parseInt(formValue.age || '0'),
       pace: parseInt(formValue.pace || '0'),
       shooting: parseInt(formValue.shooting || '0'),
       passing: parseInt(formValue.passing || '0'),

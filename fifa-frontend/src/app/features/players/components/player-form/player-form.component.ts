@@ -63,7 +63,12 @@ export class PlayerFormComponent implements OnInit {
 
     if (field.errors['required']) return `${fieldName} es requerido`;
     if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
-    if (field.errors['min']) return `Valor mínimo: ${field.errors['min'].min}`;
+    if (field.errors['min']) {
+      if (fieldName === 'version') {
+        return 'La versión debe ser mayor a 19';
+      }
+      return `Valor mínimo: ${field.errors['min'].min}`;
+    }
     if (field.errors['max']) return `Valor máximo: ${field.errors['max'].max}`;
     return 'Campo inválido';
   }

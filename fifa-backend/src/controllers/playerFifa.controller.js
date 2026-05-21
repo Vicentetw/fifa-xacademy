@@ -45,13 +45,9 @@ const getPlayerFifaById = async (req, res) => {
 
     const mapped = mapToFrontend(player);
 
-    // devolver en la misma forma que getPlayerById actual (skills agrupadas)
+    // devolver el objeto mapeado completo junto a la estructura de skills
     return res.json({
-      id: mapped.id,
-      name: mapped.name,
-      team: mapped.team,
-      position: mapped.position,
-      version: mapped.version,
+      ...mapped,
       skills: {
         labels: ['pace', 'shooting', 'passing', 'dribbling', 'defending', 'physical'],
         values: [mapped.pace, mapped.shooting, mapped.passing, mapped.dribbling, mapped.defending, mapped.physical]
@@ -67,12 +63,17 @@ const getPlayerFifaById = async (req, res) => {
 const createPlayerFifa = async (req, res) => {
   try {
     const body = req.body;
-    // validación mínima
-    if (!body.long_name || !body.fifa_version || typeof body.overall === 'undefined' || typeof body.potential === 'undefined') {
+    const payload = mapFromFrontend(body);
+
+    if (!payload.long_name || !payload.fifa_version) {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
-    const payload = mapFromFrontend(body);
+    // Para que el formulario antiguo siga funcionando, asigno valores por defecto.
+    payload.overall = payload.overall ?? 0;
+    payload.potential = payload.potential ?? 0;
+    payload.age = payload.age ?? 18;
+
     const player = await PlayerFifa.create(payload);
     return res.status(201).json({ message: 'Jugador FIFA creado', data: mapToFrontend(player) });
   } catch (error) {

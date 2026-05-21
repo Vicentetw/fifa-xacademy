@@ -70,6 +70,76 @@
     </span>
   </div>
 
+  <!-- FIFA UPDATE -->
+  <div class="form-group">
+    <label for="fifa_update">FIFA Update <span class="required">*</span></label>
+    <input 
+      id="fifa_update"
+      type="text" 
+      formControlName="fifa_update"
+      placeholder="Ej: 2"
+      [class.invalid]="isFieldInvalid('fifa_update')">
+    <span class="field-error" *ngIf="isFieldInvalid('fifa_update')">
+      {{ getFieldError('fifa_update') }}
+    </span>
+  </div>
+
+  <!-- PLAYER FACE URL -->
+  <div class="form-group">
+    <label for="player_face_url">Foto URL <span class="required">*</span></label>
+    <input 
+      id="player_face_url"
+      type="text" 
+      formControlName="player_face_url"
+      placeholder="https://example.com/foto.png"
+      [class.invalid]="isFieldInvalid('player_face_url')">
+    <span class="field-error" *ngIf="isFieldInvalid('player_face_url')">
+      {{ getFieldError('player_face_url') }}
+    </span>
+  </div>
+
+  <!-- OVERALL -->
+  <div class="form-group">
+    <label for="overall">Overall <span class="required">*</span></label>
+    <input 
+      id="overall"
+      type="number" 
+      formControlName="overall"
+      placeholder="0-99"
+      [class.invalid]="isFieldInvalid('overall')">
+    <span class="field-error" *ngIf="isFieldInvalid('overall')">
+      {{ getFieldError('overall') }}
+    </span>
+  </div>
+
+  <!-- POTENTIAL -->
+  <div class="form-group">
+    <label for="potential">Potential <span class="required">*</span></label>
+    <input 
+      id="potential"
+      type="number" 
+      formControlName="potential"
+      placeholder="0-99"
+      [class.invalid]="isFieldInvalid('potential')">
+    <span class="field-error" *ngIf="isFieldInvalid('potential')">
+      {{ getFieldError('potential') }}
+    </span>
+  </div>
+
+  <!-- AGE -->
+  <div class="form-group">
+    <label for="age">Edad <span class="required">*</span></label>
+    <input 
+      id="age"
+      type="number" 
+      formControlName="age"
+      placeholder="Ej: 25"
+      [class.invalid]="isFieldInvalid('age')">
+    <span class="field-error" *ngIf="isFieldInvalid('age')">
+      {{ getFieldError('age') }}
+    </span>
+  </div>
+
   <!-- ATRIBUTOS (Grid 2 columnas) -->
   <div class="attributes-grid">
     <!-- PACE -->

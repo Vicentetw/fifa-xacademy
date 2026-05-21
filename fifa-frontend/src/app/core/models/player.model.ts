@@ -7,6 +7,11 @@ export interface Player {
   team: string;
   position: string;
   version: number;
+  fifa_update?: string;
+  player_face_url?: string;
+  overall?: number;
+  potential?: number;
+  age?: number;
   pace: number;
   shooting: number;
   passing: number;
