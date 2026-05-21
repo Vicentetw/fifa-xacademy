@@ -1,0 +1,57 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: fifa_mysql
+
+    restart: unless-stopped
+
+    ports:
+      - "3306:3306"
+
+    env_file:
+      - ./fifa-backend/.env
+
+    command: --default-authentication-plugin=mysql_native_password
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./fifa-backend
+    container_name: fifa_backend
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - ./fifa-backend/.env
+
+    depends_on:
+      - mysql
+
+    volumes:
+      - ./fifa-backend:/app
+      - /app/node_modules
+
+  frontend:
+    build: ./fifa-frontend
+    container_name: fifa_frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "4200:4200"
+
+    depends_on:
+      - backend
+
+    volumes:
+      - ./fifa-frontend:/app
+      - /app/node_modules
+
+volumes:
+  mysql_data:
