@@ -2,32 +2,17 @@ const PlayerFifa = require('../models/playerFifa.model');
 const { Op } = require('sequelize');
 const { Parser } = require('json2csv');
 const { mapToFrontend, mapFromFrontend } = require('../utils/playerFifa.mapper');
+const playerFifaService = require('../services/playerFifa.service');
 
 // GET /api/players-fifa
 const getPlayersFifa = async (req, res) => {
   try {
     const { page = 1, limit = 10, name, team, position, version } = req.query;
-    const offset = (page - 1) * limit;
-    const where = {};
+    const filters = { name, team, position, version };
 
-    if (name) where.long_name = { [Op.like]: `%${name}%` };
-    if (team) where.club_name = { [Op.like]: `%${team}%` };
-    if (position) where.player_positions = position;
-    if (version) where.fifa_version = version;
+    const result = await playerFifaService.listPlayers({ page, limit, filters });
 
-    const { count, rows } = await PlayerFifa.findAndCountAll({
-      where,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
-      order: [['id', 'DESC']]
-    });
-
-    res.json({
-      total: count,
-      page: parseInt(page),
-      totalPages: Math.ceil(count / limit),
-      data: rows.map(mapToFrontend)
-    });
+    return res.json(result);
   } catch (error) {
     console.error('Error getPlayersFifa:', error);
     res.status(500).json({ message: 'Error al obtener players_fifa' });
@@ -40,10 +25,8 @@ const getPlayerFifaById = async (req, res) => {
     const { id } = req.params;
     if (!id || isNaN(id)) return res.status(400).json({ message: 'ID inválido' });
 
-    const player = await PlayerFifa.findByPk(id);
-    if (!player) return res.status(404).json({ message: 'Jugador no encontrado' });
-
-    const mapped = mapToFrontend(player);
+    const mapped = await playerFifaService.getPlayerById(id);
+    if (!mapped) return res.status(404).json({ message: 'Jugador no encontrado' });
 
     // devolver el objeto mapeado completo junto a la estructura de skills
     return res.json({
@@ -69,13 +52,9 @@ const createPlayerFifa = async (req, res) => {
       return res.status(400).json({ message: 'Faltan campos obligatorios' });
     }
 
-    // Para que el formulario antiguo siga funcionando, asigno valores por defecto.
-    payload.overall = payload.overall ?? 0;
-    payload.potential = payload.potential ?? 0;
-    payload.age = payload.age ?? 18;
-
-    const player = await PlayerFifa.create(payload);
-    return res.status(201).json({ message: 'Jugador FIFA creado', data: mapToFrontend(player) });
+    // Delego la creación al service (el service mapeará internamente)
+    const created = await playerFifaService.createPlayer(body);
+    return res.status(201).json({ message: 'Jugador FIFA creado', data: created });
   } catch (error) {
     console.error('Error createPlayerFifa:', error);
     res.status(500).json({ message: 'Error al crear player_fifa' });
@@ -88,15 +67,14 @@ const updatePlayerFifa = async (req, res) => {
     const { id } = req.params;
     if (!id || isNaN(id)) return res.status(400).json({ message: 'ID inválido' });
 
-    const player = await PlayerFifa.findByPk(id);
-    if (!player) return res.status(404).json({ message: 'Jugador no encontrado' });
-
-    // permitir updates parciales: mapear desde los campos del frontend
-    const updates = mapFromFrontend(req.body);
-    await player.update(updates);
-    return res.json(mapToFrontend(player));
+    // Delego al servicio - este lanza si no existe
+    const updated = await playerFifaService.updatePlayer(id, req.body);
+    return res.json(updated);
   } catch (error) {
     console.error('Error updatePlayerFifa:', error);
+    if (String(error.message).includes('no encontrado') || String(error.message).includes('not found')) {
+      return res.status(404).json({ message: 'Jugador no encontrado' });
+    }
     res.status(500).json({ message: 'Error al actualizar player_fifa' });
   }
 };
@@ -107,13 +85,13 @@ const deletePlayerFifa = async (req, res) => {
     const { id } = req.params;
     if (!id || isNaN(id)) return res.status(400).json({ message: 'ID inválido' });
 
-    const player = await PlayerFifa.findByPk(id);
-    if (!player) return res.status(404).json({ message: 'Jugador no encontrado' });
-
-    await player.destroy();
+    await playerFifaService.deletePlayer(id);
     return res.json({ message: 'Jugador eliminado' });
   } catch (error) {
     console.error('Error deletePlayerFifa:', error);
+    if (String(error.message).includes('no encontrado') || String(error.message).includes('not found')) {
+      return res.status(404).json({ message: 'Jugador no encontrado' });
+    }
     res.status(500).json({ message: 'Error al eliminar player_fifa' });
   }
 };
