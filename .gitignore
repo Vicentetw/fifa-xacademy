@@ -52,7 +52,7 @@ backend/node_modules/
 # ======================
 # DATABASE
 # ======================
-*.sql
+#*.sql
 base-de-males/
 # ======================
 # DOCKER
