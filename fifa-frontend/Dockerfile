@@ -1,10 +1,10 @@
-FROM node:24.15
+FROM node:22.21.1
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 COPY . .
 

@@ -70,11 +70,13 @@ const login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES }
     );
 
+    const isProduction = process.env.NODE_ENV === 'production';
+
     // 4. Enviar cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none'
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax'
     });
 
     res.json({ message: 'Login exitoso' });
@@ -88,10 +90,12 @@ const login = async (req, res) => {
 // LOGOUT
 // =======================
 const logout = (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.clearCookie('token', {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none'
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax'
   });
 
   res.json({ message: 'Logout exitoso' });

@@ -30,9 +30,22 @@ app.use(cookieParser());
 // ============================================
 
 // CORS - Permite solicitudes del frontend Angular
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:4200',
+  'http://127.0.0.1:4200'
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://fifa-xacademy.web.app',
-  credentials: true // Permite enviar cookies
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS policy: origin ${origin} not allowed`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Parser de JSON - Transforma el body a objeto JavaScript
