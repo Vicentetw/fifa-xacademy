@@ -74,7 +74,8 @@ Funcionalidades clave:
 ## cómo iniciar
 1- clonar el repositorio: https://github.com/Vicentetw/fifa-xacademy.git
 2- cambiar a la rama "docker-update" la cual está actualizada y preparada para correr los 3 servidores con un comando: "docker compose up -d"
-3- La rama main es una versión más simple para hacer el deploy online.
+3- En la carpeta "fifa-backend" cambiar extensión ".env.local" a ".env" que tiene las variables de entorno necesarias para conectar el back con la base de datos.
+4- La rama main es una versión más simple para hacer el deploy online.
 https://fifa-xacademy.web.app/  
 Login 
 User: test1@test.com
