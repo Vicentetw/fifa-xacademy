@@ -29,5 +29,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/players/player-list/player-list.component')
         .then(m => m.PlayerListComponent)
-  }
+  },
+  {
+  path: 'auth/register',
+  loadComponent: () =>
+    import('./features/auth/register/register.component')
+      .then(m => m.RegisterComponent)
+}
 ];
