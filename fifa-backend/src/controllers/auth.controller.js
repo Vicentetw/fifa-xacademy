@@ -10,11 +10,12 @@ const register = async (req, res) => {
     const { email, password } = req.body;
 
     // 1. Validación básica si no hay email o password
-    if (!email || !password || password.length < 6) {
-  return res.status(400).json({
-    message: 'Datos inválidos (password mínimo 6 caracteres)'
-  });
-}
+    const passwordValid = password && password.length >= 8 && /[A-Z]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    if (!email || !password || !passwordValid) {
+      return res.status(400).json({
+        message: 'Datos inválidos (mínimo 8 caracteres, una mayúscula y un carácter especial)'
+      });
+    }
 
     // 2. Verificar si existe usuario con ese email y no permite crear otro con el mismo email
     const existingUser = await User.findOne({ where: { email } });
