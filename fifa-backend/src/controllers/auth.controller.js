@@ -10,11 +10,12 @@ const register = async (req, res) => {
     const { email, password } = req.body;
 
     // 1. Validación básica si no hay email o password
-    if (!email || !password || password.length < 6) {
-  return res.status(400).json({
-    message: 'Datos inválidos (password mínimo 6 caracteres)'
-  });
-}
+    const passwordValid = password && password.length >= 8 && /[A-Z]/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    if (!email || !password || !passwordValid) {
+      return res.status(400).json({
+        message: 'Datos inválidos (mínimo 8 caracteres, una mayúscula y un carácter especial)'
+      });
+    }
 
     // 2. Verificar si existe usuario con ese email y no permite crear otro con el mismo email
     const existingUser = await User.findOne({ where: { email } });
@@ -70,11 +71,13 @@ const login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES }
     );
 
+    const isProduction = process.env.NODE_ENV === 'production';
+
     // 4. Enviar cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: true,
-      sameSite: 'none'
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax'
     });
 
     res.json({ message: 'Login exitoso' });
@@ -88,10 +91,12 @@ const login = async (req, res) => {
 // LOGOUT
 // =======================
 const logout = (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   res.clearCookie('token', {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none'
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax'
   });
 
   res.json({ message: 'Logout exitoso' });

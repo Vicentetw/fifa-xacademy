@@ -98,7 +98,23 @@ export class PlayerListComponent implements OnInit {
    * Abre el modal para editar un jugador
    */
   editPlayer(player: Player): void {
-    this.modalService.openModal('playerForm', player, `✏️ Editar - ${player.name}`);
+    if (!player.id) {
+      this.errorMessage = 'ID de jugador no válido';
+      return;
+    }
+
+    this.isLoading = true;
+    this.playersService.getPlayerById(player.id).subscribe({
+      next: (fullPlayer) => {
+        this.modalService.openModal('playerForm', fullPlayer, `✏️ Editar - ${fullPlayer.name}`);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error al cargar datos del jugador';
+        console.error(error);
+        this.isLoading = false;
+      }
+    });
   }
 
   /**

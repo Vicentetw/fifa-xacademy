@@ -24,7 +24,7 @@ export class PlayerFormComponent implements OnInit {
     name: ['', [Validators.required, Validators.minLength(3)]],
     team: ['', [Validators.required, Validators.minLength(2)]],
     position: ['', [Validators.required]],
-    version: ['', [Validators.required, Validators.min(1990)]],
+    version: ['', [Validators.required, Validators.min(20)]],
     pace: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     shooting: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
     passing: ['', [Validators.required, Validators.min(0), Validators.max(99)]],
@@ -63,7 +63,12 @@ export class PlayerFormComponent implements OnInit {
 
     if (field.errors['required']) return `${fieldName} es requerido`;
     if (field.errors['minlength']) return `Mínimo ${field.errors['minlength'].requiredLength} caracteres`;
-    if (field.errors['min']) return `Valor mínimo: ${field.errors['min'].min}`;
+    if (field.errors['min']) {
+      if (fieldName === 'version') {
+        return 'La versión debe ser mayor a 19';
+      }
+      return `Valor mínimo: ${field.errors['min'].min}`;
+    }
     if (field.errors['max']) return `Valor máximo: ${field.errors['max'].max}`;
     return 'Campo inválido';
   }

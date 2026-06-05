@@ -10,7 +10,7 @@ yarn-error.log*
 # ENV VARIABLES (SEGURIDAD)
 # ======================
 .env
-.env.*.local
+
 
 # ======================
 # LOGS
@@ -52,7 +52,7 @@ backend/node_modules/
 # ======================
 # DATABASE
 # ======================
-*.sql
+#*.sql
 base-de-males/
 # ======================
 # DOCKER

@@ -17,6 +17,7 @@ const { connectDB, sequelize } = require('./config/database.js');
 // Importar rutas
 const authRoutes = require('./routes/auth.routes');
 const playerRoutes = require('./routes/player.routes');
+const playerFifaRoutes = require('./routes/playerFifa.routes');
 
 //leer cookies
 const cookieParser = require('cookie-parser');
@@ -29,9 +30,22 @@ app.use(cookieParser());
 // ============================================
 
 // CORS - Permite solicitudes del frontend Angular
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:4200',
+  'http://127.0.0.1:4200'
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://fifa-xacademy.web.app',
-  credentials: true // Permite enviar cookies
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS policy: origin ${origin} not allowed`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Parser de JSON - Transforma el body a objeto JavaScript
@@ -69,6 +83,7 @@ app.get('/ready', async (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/players', playerRoutes);
+app.use('/api/players-fifa', playerFifaRoutes);
 
 // ============================================
 // MANEJO DE ERRORES 404
@@ -108,12 +123,17 @@ const startServer = async () => {
 
     const User = require('./models/user.model');
     const Player = require('./models/player.model');
+    const PlayerFifa = require('./models/playerFifa.model');
 
 
     await User.sync();
     console.log('✅ Tabla users sincronizada');
 
     await Player.sync();
+    console.log('✅ Tabla players sincronizada');
+
+    await PlayerFifa.sync();
+    console.log('✅ Tabla players_fifa sincronizada');
     
     // 3. Iniciar servidor
     const PORT = process.env.PORT || 3000;

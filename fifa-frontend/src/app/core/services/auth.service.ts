@@ -48,4 +48,14 @@ export class AuthService {
     { withCredentials: true }
   );
 }
+
+register(email: string, password:string): Observable<any>{
+  return this.http.post(
+    `${this.API_URL}/register`,
+    {email, password},
+    { withCredentials: true }
+  );
+}
+
+
 }
